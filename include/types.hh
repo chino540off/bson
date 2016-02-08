@@ -52,7 +52,7 @@ std::ostream &
 operator<<(std::ostream &		os,
 		   t_regex const &		e)
 {
-	return os << e.pattern << " " << e.regex;
+	return os << "/" << e.pattern << "/" << e.regex;
 }
 
 struct t_dbpointer
