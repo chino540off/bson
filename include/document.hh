@@ -39,9 +39,9 @@ class _TDocument:
 			// get size from buffer
 			_size = Decoder<std::int32_t>(buffer, offset).value();
 
-			std::cout << this << " start: " << Element<TKey>::_key_offset << " "
-					  << "size: " << _size
-					  << std::endl;
+			//std::cout << this << " start: " << Element<TKey>::_key_offset << " "
+			//		  << "size: " << _size
+			//		  << std::endl;
 
 			if (Element<TKey>::_key_offset + _size > buffer.size())
 			{

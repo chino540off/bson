@@ -54,8 +54,8 @@ class _TElement<TKey, _id, TValue>:
 				  unsigned int &					offset):
 			Element<TKey>(buffer, offset)
 		{
-			std::cout << "start: " << Element<TKey>::_key_offset << " "
-					  << std::endl;
+			//std::cout << "start: " << Element<TKey>::_key_offset << " "
+			//		  << std::endl;
 
 			_value = Decoder<TValue>(buffer, offset).value();
 		}

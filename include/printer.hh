@@ -57,7 +57,6 @@ class Printer:
 			++_indent;
 			for (auto & i : e.elements())
 			{
-				_os << "lol";
 				i->accept(*this);
 				_os << std::endl;
 			}
