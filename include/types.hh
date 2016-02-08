@@ -2,6 +2,7 @@
 # define TYPES_HH_
 
 # include <string>
+# include <iomanip>
 
 typedef std::string				t_cstring;
 
@@ -26,7 +27,7 @@ struct t_oid
 {
 	static constexpr unsigned int		size = T_OID_SIZE;
 
-	std::uint8_t				buffer[T_OID_SIZE];
+	std::uint8_t						buffer[T_OID_SIZE];
 };
 
 std::ostream &
@@ -36,7 +37,7 @@ operator<<(std::ostream &		os,
 	os << std::hex;
 
 	for (unsigned int i = 0; i < t_oid::size; ++i)
-		os << static_cast<int>(i);
+		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
 
 	os << std::dec;
 	return os;
