@@ -202,7 +202,7 @@ struct t_code_w_s
 /// It exists, but implemented in printerVisitor
 std::ostream &
 operator<<(std::ostream &							os,
-		   t_code_w_s const &						e)
+		   t_code_w_s const &						/* e */)
 {
 	return os;
 }

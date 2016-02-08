@@ -15,7 +15,7 @@ class Decoder
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
-				std::vector<std::uint8_t>::const_iterator const &	end,
+				std::vector<std::uint8_t>::const_iterator const &	/* end */,
 				unsigned int &								offset)
 		{
 			std::memcpy(&_value, &it[offset], sizeof (T));
@@ -38,7 +38,7 @@ class Decoder<bool>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
-				std::vector<std::uint8_t>::const_iterator const &	end,
+				std::vector<std::uint8_t>::const_iterator const &	/* end */,
 				unsigned int &								offset)
 		{
 			_value = static_cast<bool>(it[offset]);
@@ -61,7 +61,7 @@ class Decoder<t_cstring>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
-				std::vector<std::uint8_t>::const_iterator const &	end,
+				std::vector<std::uint8_t>::const_iterator const &	/* end */,
 				unsigned int &								offset)
 		{
 			while (it[offset] != 0x00)
@@ -92,13 +92,6 @@ class Decoder<t_string>
 				unsigned int &								offset)
 		{
 			_value.len = Decoder<std::int32_t>(it, end, offset).value();
-
-			if (_value.len < 0)
-			{
-				// FIXME: throw exception
-				return;
-			}
-
 			_value.str = Decoder<t_cstring>(it, end, offset).value();
 		}
 
@@ -118,7 +111,7 @@ class Decoder<t_oid>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
-				std::vector<std::uint8_t>::const_iterator const &	end,
+				std::vector<std::uint8_t>::const_iterator const &	/* end */,
 				unsigned int &								offset)
 		{
 			std::memcpy(&_value.buffer, &it[offset], t_oid::size);

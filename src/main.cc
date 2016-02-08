@@ -9,7 +9,6 @@ int
 main(int								argc,
 	 char**								argv)
 {
-	int									pos = 0;
 	if (argc != 2)
 	{
 		return 1;
