@@ -8,7 +8,7 @@ template <class ManufacturedType, typename ClassIDKey>
 class GenericFactory
 {
 	private:
-		typedef ManufacturedType* (*BaseCreateFn)(std::vector<std::uint8_t>::const_iterator &, unsigned int &);
+		typedef ManufacturedType* (*BaseCreateFn)(std::vector<std::uint8_t>::const_iterator &, std::vector<std::uint8_t>::const_iterator const &, unsigned int &);
 		typedef std::map<ClassIDKey, BaseCreateFn> FnRegistry;
 
 		FnRegistry registry;
@@ -36,12 +36,13 @@ class GenericFactory
 
 		ManufacturedType *			Create(ClassIDKey const &									className,
 										   std::vector<std::uint8_t>::const_iterator &			it,
+										   std::vector<std::uint8_t>::const_iterator const &	end,
 										   unsigned int &										pos) const
 		{
 			auto reg = registry.find(className);
 
 			if (reg != registry.end())
-				return registry.at(className)(it, pos);
+				return registry.at(className)(it, end, pos);
 			else
 				return nullptr;
 		}
@@ -52,9 +53,10 @@ class RegisterInFactory
 {
 	public:
 		static AncestorType *		CreateInstance(std::vector<std::uint8_t>::const_iterator &	it,
+												   std::vector<std::uint8_t>::const_iterator const &	end,
 												   unsigned int &								pos)
 		{
-			return new ManufacturedType(it, pos);
+			return new ManufacturedType(it, end, pos);
 		}
 
 		RegisterInFactory(ClassIDKey const & id)

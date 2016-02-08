@@ -2,6 +2,7 @@
 # define DOCUMENT_HH_
 
 # include <memory>
+# include <exception>
 
 # include <decoder.hh>
 # include <element.hh>
@@ -13,33 +14,36 @@ class _TDocument:
 	public Element<TKey>
 {
 	public:
-		static constexpr std::uint8_t							id = _id;
+		static constexpr std::uint8_t									id = _id;
 
 	public:
-		_TDocument(std::vector<std::uint8_t>::const_iterator &	it)
+		_TDocument(std::vector<std::uint8_t>::const_iterator &			it,
+				   std::vector<std::uint8_t>::const_iterator const &	end)
 		{
-			unsigned int										offset = 0;
+			unsigned int												offset = 0;
 
-			init(it, offset);
+			init(it, end, offset);
 
 			it += offset;
 		}
 
 	public:
-		_TDocument(std::vector<std::uint8_t>::const_iterator &	it,
-				   unsigned int &								offset):
-			Element<TKey>(it, offset)
+		_TDocument(std::vector<std::uint8_t>::const_iterator &			it,
+				   std::vector<std::uint8_t>::const_iterator const &	end,
+				   unsigned int &										offset):
+			Element<TKey>(it, end, offset)
 		{
-			init(it, offset);
+			init(it, end, offset);
 		}
 
 	private:
 		void
-		init(std::vector<std::uint8_t>::const_iterator &		it,
-			 unsigned int &										offset)
+		init(std::vector<std::uint8_t>::const_iterator &				it,
+			 std::vector<std::uint8_t>::const_iterator const &			end,
+			 unsigned int &												offset)
 		{
 			// get size from it
-			_size = Decoder<std::int32_t>(it, offset).value();
+			_size = Decoder<std::int32_t>(it, end, offset).value();
 
 			//std::cout << this << " start: " << Element<TKey>::_key << " " << Element<TKey>::_key_offset << " "
 			//		  << "size: " << _size
@@ -51,18 +55,18 @@ class _TDocument:
 			//std::cout << std::dec << std::endl << std::endl;
 
 			// FIXME
-			//if (Element<TKey>::_key_offset + _size > it)
-			//{
-			//	std::cerr << this << " Error: overflow " << Element<TKey>::_key_offset + _size <<  " > " << it << std::endl;
-			//	return;
-			//}
+			if (it + Element<TKey>::_key_offset + _size > end)
+			{
+				std::cerr << this << " Error: overflow " << std::endl;//<< Element<TKey>::_key_offset + _size <<  " > " << end << std::endl;
+				throw std::exception();
+			}
 
 			if (it[Element<TKey>::_val_offset + _size - 1] != 0x00)
 			{
 				std::cerr << this << " Error: Unterminated it[" << Element<TKey>::_val_offset + _size - 1 <<  "] == "
 						  << std::hex << static_cast<int>(it[Element<TKey>::_val_offset + _size - 1])
 						  << std::dec << std::endl;
-				return;
+				throw std::exception();
 			}
 
 			while (offset < Element<TKey>::_val_offset + _size - 1)
@@ -77,7 +81,7 @@ class _TDocument:
 
 				++offset;
 
-				auto e = std::shared_ptr<Element<TKey>>(GenericFactory<Element<TKey>, std::uint8_t>::instance().Create(it[type_offset], it, offset));
+				auto e = std::shared_ptr<Element<TKey>>(GenericFactory<Element<TKey>, std::uint8_t>::instance().Create(it[type_offset], it, end, offset));
 
 				if (e != nullptr)
 				{
@@ -87,6 +91,7 @@ class _TDocument:
 				else
 				{
 					std::cerr << this << " Unknown Type " << std::hex << static_cast<int>(it[type_offset]) << std::dec << std::endl;;
+					throw std::exception();
 				}
 			}
 
@@ -99,7 +104,7 @@ class _TDocument:
 				std::cerr << this << " Error: Unterminated it[" << offset <<  "] == "
 						  << std::hex << static_cast<int>(it[offset])
 						  << std::dec << std::endl;
-				return;
+				throw std::exception();
 			}
 		}
 

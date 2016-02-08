@@ -36,7 +36,7 @@ class BSON
 
 			while (it != buffer.cend())
 			{
-				_rds.push_back(std::make_shared<RootDocument>(it));
+				_rds.push_back(std::make_shared<RootDocument>(it, buffer.cend()));
 			}
 		}
 

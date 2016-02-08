@@ -12,6 +12,7 @@ class Decoder
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
 			std::memcpy(&_value, &it[offset], sizeof (T));
@@ -33,6 +34,7 @@ class Decoder<t_empty>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
 		}
@@ -52,6 +54,7 @@ class Decoder<bool>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
 			_value = static_cast<bool>(it[offset]);
@@ -73,6 +76,7 @@ class Decoder<t_cstring>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
 			while (it[offset] != 0x00)
@@ -98,9 +102,10 @@ class Decoder<t_string>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
-			_value.len = Decoder<std::int32_t>(it, offset).value();
+			_value.len = Decoder<std::int32_t>(it, end, offset).value();
 
 			if (_value.len < 0)
 			{
@@ -108,7 +113,7 @@ class Decoder<t_string>
 				return;
 			}
 
-			_value.str = Decoder<t_cstring>(it, offset).value();
+			_value.str = Decoder<t_cstring>(it, end, offset).value();
 		}
 
 	public:
@@ -126,6 +131,7 @@ class Decoder<t_oid>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
 			std::memcpy(&_value.buffer, &it[offset], t_oid::size);
@@ -147,10 +153,11 @@ class Decoder<t_regex>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
-			_value.pattern = Decoder<t_cstring>(it, offset).value();
-			_value.regex = Decoder<t_cstring>(it, offset).value();
+			_value.pattern = Decoder<t_cstring>(it, end, offset).value();
+			_value.regex = Decoder<t_cstring>(it, end, offset).value();
 		}
 
 	public:
@@ -168,9 +175,10 @@ class Decoder<t_dbpointer>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
-			_value.str = Decoder<t_string>(it, offset).value();
+			_value.str = Decoder<t_string>(it, end, offset).value();
 			std::memcpy(&_value.buffer, &it[offset], t_dbpointer::size);
 			offset += t_dbpointer::size;
 		}
@@ -190,10 +198,11 @@ class Decoder<t_binary>
 {
 	public:
 		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &								offset)
 		{
-			_value.size = Decoder<std::int32_t>(it, offset).value();
-			_value.subtype = Decoder<std::uint8_t>(it, offset).value();
+			_value.size = Decoder<std::int32_t>(it, end, offset).value();
+			_value.subtype = Decoder<std::uint8_t>(it, end, offset).value();
 
 			//if (_value.size + offset > it.size())
 			if (_value.size < 0)

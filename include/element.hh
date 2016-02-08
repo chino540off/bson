@@ -18,11 +18,12 @@ class Element
 
 	public:
 		Element(std::vector<std::uint8_t>::const_iterator &		it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
 				unsigned int &									offset):
 			_key_offset(offset)
 
 		{
-			_key		= Decoder<TKey>(it,	offset).value();
+			_key		= Decoder<TKey>(it, end, offset).value();
 			_val_offset	= offset;
 		}
 
@@ -51,10 +52,11 @@ class _TElement<TKey, _id, TValue>:
 
 	public:
 		_TElement(std::vector<std::uint8_t>::const_iterator &	it,
+				  std::vector<std::uint8_t>::const_iterator const &	end,
 				  unsigned int &								offset):
-			Element<TKey>(it, offset)
+			Element<TKey>(it, end, offset)
 		{
-			_value = Decoder<TValue>(it, offset).value();
+			_value = Decoder<TValue>(it, end, offset).value();
 		}
 
 	public:
@@ -87,8 +89,9 @@ class _TElement<TKey, _id>:
 
 	public:
 		_TElement(std::vector<std::uint8_t>::const_iterator &	it,
+				  std::vector<std::uint8_t>::const_iterator const &	end,
 				  unsigned int &								offset):
-			Element<TKey>(it, offset)
+			Element<TKey>(it, end, offset)
 		{
 		}
 
