@@ -60,7 +60,10 @@ class BSON
 	public:
 		Element<t_cstring> const &	operator[](unsigned int		i)
 		{
-			return *_rds[i];
+			if (i < _rds.size())
+				return *_rds[i];
+
+			throw std::exception();
 		}
 
 	private:

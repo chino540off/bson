@@ -45,6 +45,21 @@ class Element
 	public:
 		virtual std::uint8_t									type() const = 0;
 
+		template<typename T>
+		bool													is() const
+		{
+			return this->type() == T::id;
+		}
+
+		template<typename T>
+		T const &												get() const
+		{
+			if (this->is<T>())
+				return *static_cast<T const *>(this);
+
+			throw std::exception();
+		}
+
 	public:
 		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &) = 0;
@@ -83,12 +98,6 @@ class _TElement<TKey, _id, TValue>:
 		}
 
 	public:
-		virtual std::uint8_t									type() const
-		{
-			return id;
-		}
-
-	public:
 		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &		v)
 		{
@@ -99,6 +108,12 @@ class _TElement<TKey, _id, TValue>:
 		virtual void											accept(ConstVisitor &	v) const
 		{
 			v.visit(*this);
+		}
+
+	public:
+		virtual std::uint8_t									type() const
+		{
+			return id;
 		}
 
 	public:
