@@ -39,7 +39,7 @@ class _TDocument:
 			// get size from buffer
 			_size = Decoder<std::int32_t>(buffer, offset).value();
 
-			std::cout << "start: " << Element<TKey>::_key_offset << " "
+			std::cout << this << " start: " << Element<TKey>::_key_offset << " "
 					  << "size: " << _size
 					  << std::endl;
 
@@ -57,7 +57,7 @@ class _TDocument:
 				return;
 			}
 
-			while (offset < _size)
+			while (offset < Element<TKey>::_val_offset + _size)
 			{
 				if (buffer[offset] == 0x00)
 					break;
