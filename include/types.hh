@@ -18,7 +18,7 @@ std::ostream &
 operator<<(std::ostream &		os,
 		   t_string const &		e)
 {
-	return os << "(" << e.len << ")" << e.str;
+	return os << "\"" << e.str << "\"";
 }
 
 # define T_OID_SIZE				12
@@ -34,12 +34,15 @@ std::ostream &
 operator<<(std::ostream &		os,
 		   t_oid const &		e)
 {
+	os << "ObjectId( \"";
 	os << std::hex;
 
 	for (unsigned int i = 0; i < t_oid::size; ++i)
 		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
 
 	os << std::dec;
+	os << "\" )";
+
 	return os;
 }
 
