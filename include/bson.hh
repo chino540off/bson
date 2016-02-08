@@ -49,9 +49,12 @@ class BSON
 			Printer			p(std::cout);
 
 			for (auto & rd: _rds)
+			{
 				rd->accept(p);
+				std::cout << std::endl;
+			}
 
-			std::cout << std::endl << _rds.size() << " objects found" << std::endl;
+			std::cout << _rds.size() << " objects found" << std::endl;
 		}
 
 	private:
