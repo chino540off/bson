@@ -32,9 +32,12 @@ class BSON
 	public:
 		BSON(std::vector<std::uint8_t> const &		buffer)
 		{
-			unsigned int							offset = 0;
+			auto									it = buffer.cbegin();
 
-			_rds.push_back(std::make_shared<RootDocument>(buffer));
+			while (it != buffer.cend())
+			{
+				_rds.push_back(std::make_shared<RootDocument>(it));
+			}
 		}
 
 	public:

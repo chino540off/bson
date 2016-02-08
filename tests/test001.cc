@@ -12,7 +12,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0x02, 'a', 0x00, 0x00};
 
-			String						elt(vec, offset);
+			auto it = vec.cbegin();
+			String						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 			assert(elt.value().len == 0);
@@ -26,7 +27,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0x08, 'a', 0x00, 0x00};
 
-			Boolean						elt(vec, offset);
+			auto it = vec.cbegin();
+			Boolean						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 			assert(elt.value() == false);
@@ -35,7 +37,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0x08, 'a', 0x00, 0x01};
 
-			Boolean						elt(vec, offset);
+			auto it = vec.cbegin();
+			Boolean						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 			assert(elt.value() == true);
@@ -48,7 +51,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0x0B, 'a', 0x00, 'l', 'o', 'l', 0x00, '.', '*', 0x00};
 
-			Regex						elt(vec, offset);
+			auto it = vec.cbegin();
+			Regex						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 			assert(elt.value().pattern == "lol");
@@ -62,7 +66,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0x7F, 'a', 0x00};
 
-			MaxKey						elt(vec, offset);
+			auto it = vec.cbegin();
+			MaxKey						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 		}
@@ -74,7 +79,8 @@ main(void)
 			unsigned int				offset = 1;
 			std::vector<std::uint8_t>	vec = {0xFF, 'a', 0x00};
 
-			MinKey						elt(vec, offset);
+			auto it = vec.cbegin();
+			MinKey						elt(it, offset);
 			assert(elt.id == vec[0]);
 			assert(elt.key() == "a");
 		}
