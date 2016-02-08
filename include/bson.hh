@@ -30,9 +30,11 @@ RegisterInFactory<Element<t_cstring>, MaxKey,		std::uint8_t>	_register_elt_maxke
 class BSON
 {
 	public:
-		BSON(std::vector<std::uint8_t> const &	buffer):
-			_rd(buffer)
+		BSON(std::vector<std::uint8_t> const &		buffer)
 		{
+			unsigned int							offset = 0;
+
+			_rds.push_back(std::make_shared<RootDocument>(buffer, offset));
 		}
 
 	public:
@@ -40,11 +42,14 @@ class BSON
 		{
 			Printer			p(std::cout);
 
-			_rd.accept(p);
+			for (auto & rd: _rds)
+				rd->accept(p);
+
+			std::cout << _rds.size() << " objects found" << std::endl;
 		}
 
 	private:
-		RootDocument							_rd;
+		std::vector<std::shared_ptr<RootDocument>>	_rds;
 };
 
 #endif /** !BSON_HH_  */
