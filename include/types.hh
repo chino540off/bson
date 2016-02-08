@@ -4,35 +4,35 @@
 # include <string>
 # include <iomanip>
 
-typedef std::string				t_cstring;
+typedef std::string									t_cstring;
 
 struct t_empty {};
 
 struct t_string
 {
-	std::int32_t				len;
-	t_cstring					str;
+	std::int32_t									len;
+	t_cstring										str;
 };
 
 std::ostream &
-operator<<(std::ostream &		os,
-		   t_string const &		e)
+operator<<(std::ostream &							os,
+		   t_string const &							e)
 {
 	return os << "\"" << e.str << "\"";
 }
 
-# define T_OID_BUFFER_SIZE				12
+# define T_OID_BUFFER_SIZE							12
 
 struct t_oid
 {
-	static constexpr unsigned int		size = T_OID_BUFFER_SIZE;
+	static constexpr unsigned int					size = T_OID_BUFFER_SIZE;
 
-	std::uint8_t						buffer[T_OID_BUFFER_SIZE];
+	std::uint8_t									buffer[T_OID_BUFFER_SIZE];
 };
 
 std::ostream &
-operator<<(std::ostream &		os,
-		   t_oid const &		e)
+operator<<(std::ostream &							os,
+		   t_oid const &							e)
 {
 	os << "ObjectId( \"";
 	os << std::hex;
@@ -48,30 +48,30 @@ operator<<(std::ostream &		os,
 
 struct t_regex
 {
-	t_cstring					pattern;
-	t_cstring					regex;
+	t_cstring										pattern;
+	t_cstring										regex;
 };
 
 std::ostream &
-operator<<(std::ostream &		os,
-		   t_regex const &		e)
+operator<<(std::ostream &							os,
+		   t_regex const &							e)
 {
 	return os << "/" << e.pattern << "/" << e.regex;
 }
 
-# define T_DBPTR_BUFFER_SIZE				12
+# define T_DBPTR_BUFFER_SIZE						12
 
 struct t_dbpointer
 {
-	static constexpr unsigned int		size = T_DBPTR_BUFFER_SIZE;
+	static constexpr unsigned int					size = T_DBPTR_BUFFER_SIZE;
 
-	t_string							str;
-	std::uint8_t						buffer[T_DBPTR_BUFFER_SIZE];
+	t_string										str;
+	std::uint8_t									buffer[T_DBPTR_BUFFER_SIZE];
 };
 
 std::ostream &
-operator<<(std::ostream &		os,
-		   t_dbpointer const &	e)
+operator<<(std::ostream &							os,
+		   t_dbpointer const &						e)
 {
 	os << "Dbref( " << e.str << ", \"";
 	os << std::hex;
