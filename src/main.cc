@@ -33,11 +33,6 @@ main(int								argc,
     vec.reserve(fileSize);
 
 	std::copy(std::istream_iterator<std::uint8_t>(file), std::istream_iterator<std::uint8_t>(), std::back_inserter(vec));
-	std::cout << "Size Read: " << vec.size() << std::endl;
-	for (auto & i : vec)
-		std::cout << std::hex << static_cast<int>(i) << " ";
-
-	std::cout << std::dec << std::endl;
 
 	auto bson = BSON(vec);
 
