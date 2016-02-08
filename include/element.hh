@@ -43,10 +43,18 @@ class Element
 		}
 
 	public:
+		virtual std::uint8_t									type() const = 0;
+
+	public:
 		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &) = 0;
 		/// Accept a Const Visitor
 		virtual void											accept(ConstVisitor &) const = 0;
+
+	public:
+		virtual bool											has_key(TKey const &) const = 0;
+
+		virtual Element<TKey> const &							operator[](TKey const &) const = 0;
 
 	protected:
 		TKey													_key;
@@ -75,6 +83,12 @@ class _TElement<TKey, _id, TValue>:
 		}
 
 	public:
+		virtual std::uint8_t									type() const
+		{
+			return id;
+		}
+
+	public:
 		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &		v)
 		{
@@ -85,6 +99,17 @@ class _TElement<TKey, _id, TValue>:
 		virtual void											accept(ConstVisitor &	v) const
 		{
 			v.visit(*this);
+		}
+
+	public:
+		virtual bool											has_key(TKey const &) const
+		{
+			return false;
+		}
+
+		virtual Element<TKey> const &							operator[](TKey const &) const
+		{
+			throw std::exception();
 		}
 
 	public:
@@ -117,6 +142,12 @@ class _TElement<TKey, _id>:
 		}
 
 	public:
+		virtual std::uint8_t									type() const
+		{
+			return id;
+		}
+
+	public:
 		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &		v)
 		{
@@ -127,6 +158,17 @@ class _TElement<TKey, _id>:
 		virtual void											accept(ConstVisitor &	v) const
 		{
 			v.visit(*this);
+		}
+
+	public:
+		virtual bool											has_key(TKey const &) const
+		{
+			return false;
+		}
+
+		virtual Element<TKey> const &							operator[](TKey const &) const
+		{
+			throw std::exception();
 		}
 };
 

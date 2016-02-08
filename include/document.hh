@@ -79,7 +79,7 @@ class _TDocument:
 
 				if (e != nullptr)
 				{
-					_elements.push_back(e);
+					_elements.insert(std::make_pair(e->key(), e));
 				}
 				else /// Unknown Type, throw exception
 				{
@@ -103,6 +103,12 @@ class _TDocument:
 		}
 
 	public:
+		virtual std::uint8_t									type() const
+		{
+			return id;
+		}
+
+	public:
 		/// Accept a NonConst Visitor
 		virtual void		accept(Visitor &					v)
 		{
@@ -116,14 +122,30 @@ class _TDocument:
 		}
 
 	public:
-		std::vector<std::shared_ptr<Element<TKey>>> const &		elements() const
+		virtual bool		has_key(TKey const &				k) const
+		{
+			return _elements.find(k) != _elements.end();
+		}
+
+		virtual Element<TKey> const &							operator[](TKey const & k) const
+		{
+			auto e = _elements.find(k);
+
+			if (e != _elements.end())
+				return *(e->second);
+
+			throw std::exception();
+		}
+
+	public:
+		std::map<TKey, std::shared_ptr<Element<TKey>>> const &	elements() const
 		{
 			return _elements;
 		}
 
 	private:
 		unsigned int											_size;
-		std::vector<std::shared_ptr<Element<TKey>>>				_elements;
+		std::map<TKey, std::shared_ptr<Element<TKey>>>			_elements;
 };
 
 #endif /** !DOCUMENT_HH_  */

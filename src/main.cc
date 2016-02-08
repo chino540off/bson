@@ -37,5 +37,8 @@ main(int								argc,
 
 	bson.Dump();
 
+	std::cout << bson[0].has_key("a") << std::endl;
+	std::cout << bson[0]["a"]["lol"].key() << std::endl;
+
 	return 0;
 }

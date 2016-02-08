@@ -34,7 +34,7 @@ class Printer:
 				if (notfirst)
 					_os << ", ";
 
-				i->accept(*this);
+				i.second->accept(*this);
 
 				notfirst = true;
 			}
@@ -74,7 +74,7 @@ class Printer:
 				if (notfirst)
 					_os << ", ";
 
-				i->accept(*this);
+				i.second->accept(*this);
 
 				notfirst = true;
 			}
@@ -96,7 +96,7 @@ class Printer:
 				if (notfirst)
 					_os << ", ";
 
-				i->accept(*this);
+				i.second->accept(*this);
 
 				notfirst = true;
 			}

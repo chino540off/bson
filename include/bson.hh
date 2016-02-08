@@ -57,6 +57,12 @@ class BSON
 			std::cout << _rds.size() << " objects found" << std::endl;
 		}
 
+	public:
+		Element<t_cstring> const &	operator[](unsigned int		i)
+		{
+			return *_rds[i];
+		}
+
 	private:
 		std::vector<std::shared_ptr<RootDocument>>	_rds;
 };
