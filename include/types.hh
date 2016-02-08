@@ -2,7 +2,9 @@
 # define TYPES_HH_
 
 # include <string>
+# include <vector>
 # include <iomanip>
+# include <memory>
 
 typedef std::string									t_cstring;
 
@@ -121,6 +123,8 @@ class _TElement;
 template <typename TKey, std::uint8_t _id>
 class _TDocument;
 
+struct t_code_w_s;
+
 typedef _TDocument<t_cstring, 0x00>					RootDocument;
 
 /// element	::=	"\x01" e_name double				64-bit binary floating point
@@ -153,6 +157,7 @@ typedef _TElement<t_cstring, 0x0D, t_string>		JSCode;
 /// |			"\x0E" e_name string				Deprecated
 typedef _TElement<t_cstring, 0x0E, t_string>		Deprecated;
 /// |			"\x0F" e_name code_w_s				JavaScript code w/ scope
+typedef _TElement<t_cstring, 0x0F, t_code_w_s>		JSCodeWS;
 /// |			"\x10" e_name int32					32-bit integer
 typedef _TElement<t_cstring, 0x10, std::int32_t>	Integer32;
 /// |			"\x11" e_name int64					Timestamp
@@ -163,6 +168,20 @@ typedef _TElement<t_cstring, 0x12, std::int64_t>	Integer64;
 typedef _TElement<t_cstring, 0xFF>					MinKey;
 /// |			"\x7F" e_name						Max key
 typedef _TElement<t_cstring, 0x7F>					MaxKey;
+
+struct t_code_w_s
+{
+	std::int32_t									size;
+	t_string										code;
+	std::shared_ptr<RootDocument>					doc;
+};
+
+//std::ostream &
+//operator<<(std::ostream &							os,
+//		   t_code_w_s const &						e)
+//{
+//	return os;
+//}
 
 #endif /** !TYPES_HH_  */
 

@@ -6,6 +6,8 @@
 # include <cstring>
 
 # include <types.hh>
+# include <document.hh>
+# include <factory.hh>
 
 template <typename T>
 class Decoder
@@ -226,6 +228,34 @@ class Decoder<t_binary>
 
 	private:
 		t_binary											_value;
+};
+
+template <>
+class Decoder<t_code_w_s>
+{
+	public:
+		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
+				std::vector<std::uint8_t>::const_iterator const &	end,
+				unsigned int &								offset)
+		{
+			_value.size = Decoder<std::int32_t>(it, end, offset).value();
+			_value.code = Decoder<t_string>(it, end, offset).value();
+			std::vector<std::uint8_t>::const_iterator tmp = it + offset;
+			_value.doc = std::make_shared<RootDocument>(tmp, end);
+
+			// 8 == t_code_w_s(sizeof(std::int32_t)) +
+			//		doc(sizeof(std::int32_t))
+			offset += _value.size - _value.code.len - 8;
+		}
+
+	public:
+		t_code_w_s const &									value() const
+		{
+			return _value;
+		}
+
+	private:
+		t_code_w_s											_value;
 };
 
 #endif /** !DECODER_HH_  */

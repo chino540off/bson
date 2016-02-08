@@ -21,6 +21,7 @@ class Visitor
 		virtual void visit(DBPointer	&) = 0;
 		virtual void visit(JSCode		&) = 0;
 		virtual void visit(Deprecated	&) = 0;
+		virtual void visit(JSCodeWS		&) = 0;
 		virtual void visit(Integer32	&) = 0;
 		virtual void visit(Timestamp	&) = 0;
 		virtual void visit(Integer64	&) = 0;
@@ -46,6 +47,7 @@ class ConstVisitor
 		virtual void visit(DBPointer	const &) = 0;
 		virtual void visit(JSCode		const &) = 0;
 		virtual void visit(Deprecated	const &) = 0;
+		virtual void visit(JSCodeWS		const &) = 0;
 		virtual void visit(Integer32	const &) = 0;
 		virtual void visit(Timestamp	const &) = 0;
 		virtual void visit(Integer64	const &) = 0;

@@ -33,7 +33,7 @@ class Printer:
 
 				notfirst = true;
 			}
-			_os << " }" << std::endl;
+			_os << " }";
 		}
 		virtual void visit(Double		const & e)
 		{
@@ -116,6 +116,14 @@ class Printer:
 		virtual void visit(Deprecated	const & e)
 		{
 			_os << "\"" << e.key() << "\" : " << e.value();
+		}
+		virtual void visit(JSCodeWS		const & e)
+		{
+			_os << "\"" << e.key() << "\" : ";// << e.value();
+			_os << "{ \"$code\" : " << e.value().code;
+			_os << " , \"$scope\" : ";
+			e.value().doc->accept(*this);
+			_os << " }";
 		}
 		virtual void visit(Integer32	const & e)
 		{

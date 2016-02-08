@@ -71,12 +71,6 @@ class _TDocument:
 
 			while (offset < Element<TKey>::_val_offset + _size - 1)
 			{
-				//if (it[offset] == 0x00)
-				//{
-				//	std::cout << this << " End: " << offset << std::endl;
-				//	break;
-				//}
-
 				unsigned int	type_offset = offset;
 
 				++offset;
@@ -85,12 +79,11 @@ class _TDocument:
 
 				if (e != nullptr)
 				{
-					//std::cout << "New Element " << static_cast<int>(it[type_offset]) << std::endl;
 					_elements.push_back(e);
 				}
 				else
 				{
-					std::cerr << this << " Unknown Type " << std::hex << static_cast<int>(it[type_offset]) << std::dec << std::endl;;
+					std::cerr << this << " Unknown Type " << std::hex << static_cast<int>(it[type_offset]) << std::dec << " at " << type_offset << std::endl;;
 					throw std::exception();
 				}
 			}
@@ -124,7 +117,6 @@ class _TDocument:
 		{
 			return _elements;
 		}
-
 
 	private:
 		unsigned int											_size;

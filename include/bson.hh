@@ -20,7 +20,7 @@ RegisterInFactory<Element<t_cstring>, Regex,		std::uint8_t>	_register_elt_regex(
 RegisterInFactory<Element<t_cstring>, DBPointer,	std::uint8_t>	_register_elt_dbpointer(0x0C);
 RegisterInFactory<Element<t_cstring>, JSCode,		std::uint8_t>	_register_elt_jscode(0x0D);
 RegisterInFactory<Element<t_cstring>, Deprecated,	std::uint8_t>	_register_elt_deprecated(0x0E);
-//RegisterInFactory<Element<t_cstring>, Null,			std::uint8_t>	_register_elt_null(0x0F);
+RegisterInFactory<Element<t_cstring>, JSCodeWS,		std::uint8_t>	_register_elt_jscodews(0x0F);
 RegisterInFactory<Element<t_cstring>, Integer32,	std::uint8_t>	_register_elt_int32(0x10);
 RegisterInFactory<Element<t_cstring>, Timestamp,	std::uint8_t>	_register_elt_timestamp(0x11);
 RegisterInFactory<Element<t_cstring>, Integer64,	std::uint8_t>	_register_elt_int64(0x12);
@@ -48,7 +48,7 @@ class BSON
 			for (auto & rd: _rds)
 				rd->accept(p);
 
-			std::cout << _rds.size() << " objects found" << std::endl;
+			std::cout << std::endl << _rds.size() << " objects found" << std::endl;
 		}
 
 	private:

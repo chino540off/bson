@@ -1,7 +1,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "element.hh"
+#include <bson.hh>
 
 int
 main(void)
