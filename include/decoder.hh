@@ -156,5 +156,27 @@ class Decoder<t_regex>
 		t_regex									_value;
 };
 
+template <>
+class Decoder<t_dbpointer>
+{
+	public:
+		Decoder(std::vector<std::uint8_t> const &	buffer,
+				unsigned int &						offset)
+		{
+			_value.str = Decoder<t_string>(buffer, offset).value();
+			std::memcpy(&_value.buffer, &buffer[offset], t_dbpointer::size);
+			offset += t_dbpointer::size;
+		}
+
+	public:
+		t_dbpointer const &							value() const
+		{
+			return _value;
+		}
+
+	private:
+		t_dbpointer									_value;
+};
+
 #endif /** !DECODER_HH_  */
 

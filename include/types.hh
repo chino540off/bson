@@ -21,13 +21,13 @@ operator<<(std::ostream &		os,
 	return os << "\"" << e.str << "\"";
 }
 
-# define T_OID_SIZE				12
+# define T_OID_BUFFER_SIZE				12
 
 struct t_oid
 {
-	static constexpr unsigned int		size = T_OID_SIZE;
+	static constexpr unsigned int		size = T_OID_BUFFER_SIZE;
 
-	std::uint8_t						buffer[T_OID_SIZE];
+	std::uint8_t						buffer[T_OID_BUFFER_SIZE];
 };
 
 std::ostream &
@@ -59,17 +59,29 @@ operator<<(std::ostream &		os,
 	return os << "/" << e.pattern << "/" << e.regex;
 }
 
+# define T_DBPTR_BUFFER_SIZE				12
+
 struct t_dbpointer
 {
-	t_cstring					str;
-	std::uint8_t				buffer[12];
+	static constexpr unsigned int		size = T_DBPTR_BUFFER_SIZE;
+
+	t_string							str;
+	std::uint8_t						buffer[T_DBPTR_BUFFER_SIZE];
 };
 
 std::ostream &
 operator<<(std::ostream &		os,
 		   t_dbpointer const &	e)
 {
-	return os << e.str << " ";// << e.regex;
+	os << "Dbref( " << e.str << ", \"";
+	os << std::hex;
+
+	for (unsigned int i = 0; i < t_dbpointer::size; ++i)
+		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
+
+	os << std::dec;
+	os << "\" )";
+	return os;
 }
 
 template <typename TKey, std::uint8_t _id, typename ...Args>
