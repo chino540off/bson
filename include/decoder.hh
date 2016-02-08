@@ -101,6 +101,13 @@ class Decoder<t_string>
 				unsigned int &						offset)
 		{
 			_value.len = Decoder<std::int32_t>(buffer, offset).value();
+
+			if (_value.len < 0)
+			{
+				// FIXME: throw exception
+				return;
+			}
+
 			_value.str = Decoder<t_cstring>(buffer, offset).value();
 		}
 
@@ -187,6 +194,13 @@ class Decoder<t_binary>
 		{
 			_value.size = Decoder<std::int32_t>(buffer, offset).value();
 			_value.subtype = Decoder<std::uint8_t>(buffer, offset).value();
+
+			//if (_value.size + offset > buffer.size())
+			if (_value.size < 0)
+			{
+				// FIXME: throw exception
+				return;
+			}
 
 			for (auto i = 0; i < _value.size; ++i)
 				_value.buffer.push_back(buffer[offset + i]);
