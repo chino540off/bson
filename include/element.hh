@@ -6,9 +6,15 @@
 # include <decoder.hh>
 # include <visitor.hh>
 
+/**
+** Element Interface, every field derive from it
+*/
 template <typename TKey>
 class Element
 {
+	/**
+	** Ctor with no key
+	*/
 	public:
 		Element():
 			_key_offset(0),
@@ -16,6 +22,9 @@ class Element
 		{
 		}
 
+	/**
+	** Ctor with a key
+	*/
 	public:
 		Element(std::vector<std::uint8_t>::const_iterator &		it,
 				std::vector<std::uint8_t>::const_iterator const &	end,
@@ -34,7 +43,9 @@ class Element
 		}
 
 	public:
+		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &) = 0;
+		/// Accept a Const Visitor
 		virtual void											accept(ConstVisitor &) const = 0;
 
 	protected:
@@ -43,6 +54,10 @@ class Element
 		unsigned int											_val_offset;
 };
 
+/**
+** Basic Element with a value, derive from Element
+** Every Fields with value are built from this meta class
+*/
 template <typename TKey, std::uint8_t _id, typename TValue>
 class _TElement<TKey, _id, TValue>:
 	public Element<TKey>
@@ -60,11 +75,13 @@ class _TElement<TKey, _id, TValue>:
 		}
 
 	public:
+		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &		v)
 		{
 			v.visit(*this);
 		}
 
+		/// Accept a Const Visitor
 		virtual void											accept(ConstVisitor &	v) const
 		{
 			v.visit(*this);
@@ -80,6 +97,10 @@ class _TElement<TKey, _id, TValue>:
 		TValue													_value;
 };
 
+/**
+** Basic Element with no value, derive from Element
+** Every Fields with no value are built from this meta class
+*/
 template <typename TKey, std::uint8_t _id>
 class _TElement<TKey, _id>:
 	public Element<TKey>
@@ -96,11 +117,13 @@ class _TElement<TKey, _id>:
 		}
 
 	public:
+		/// Accept a NonConst Visitor
 		virtual void											accept(Visitor &		v)
 		{
 			v.visit(*this);
 		}
 
+		/// Accept a Const Visitor
 		virtual void											accept(ConstVisitor &	v) const
 		{
 			v.visit(*this);

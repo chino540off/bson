@@ -4,6 +4,8 @@
 # include <map>
 # include <memory>
 
+/// Generic Factory
+/// Contain the map of allocator callbacks
 template <class ManufacturedType, typename ClassIDKey>
 class GenericFactory
 {
@@ -34,6 +36,8 @@ class GenericFactory
 			registry[className] = fn;
 		}
 
+		/// Creation Method
+		/// Call the right callback or return nullptr
 		ManufacturedType *			Create(ClassIDKey const &									className,
 										   std::vector<std::uint8_t>::const_iterator &			it,
 										   std::vector<std::uint8_t>::const_iterator const &	end,
@@ -48,10 +52,12 @@ class GenericFactory
 		}
 };
 
+/// Proxy Generic Factory
 template <class AncestorType, class ManufacturedType, typename ClassIDKey>
 class RegisterInFactory
 {
 	public:
+		/// Static method that create the Manufactured Type
 		static AncestorType *		CreateInstance(std::vector<std::uint8_t>::const_iterator &	it,
 												   std::vector<std::uint8_t>::const_iterator const &	end,
 												   unsigned int &								pos)
@@ -59,6 +65,7 @@ class RegisterInFactory
 			return new ManufacturedType(it, end, pos);
 		}
 
+		/// Ctor
 		RegisterInFactory(ClassIDKey const & id)
 		{
 			GenericFactory<AncestorType, ClassIDKey>::instance().RegCreateFn(id, CreateInstance);

@@ -3,6 +3,9 @@
 
 # include <types.hh>
 
+/**
+** Non Const Visitor, not used in challenge.
+*/
 class Visitor
 {
 	public:
@@ -29,6 +32,9 @@ class Visitor
 		virtual void visit(MaxKey		&) = 0;
 };
 
+/**
+** Const Visitor, used for the printer.
+*/
 class ConstVisitor
 {
 	public:

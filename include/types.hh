@@ -6,125 +6,28 @@
 # include <iomanip>
 # include <memory>
 
+/// CString Declaration
 typedef std::string									t_cstring;
 
-struct t_empty {};
-
-struct t_string
-{
-	std::int32_t									len;
-	t_cstring										str;
-};
-
-std::ostream &
-operator<<(std::ostream &							os,
-		   t_string const &							e)
-{
-	return os << "\"" << e.str << "\"";
-}
-
-# define T_OID_BUFFER_SIZE							12
-
-struct t_oid
-{
-	static constexpr unsigned int					size = T_OID_BUFFER_SIZE;
-
-	std::uint8_t									buffer[T_OID_BUFFER_SIZE];
-};
-
-std::ostream &
-operator<<(std::ostream &							os,
-		   t_oid const &							e)
-{
-	os << "ObjectId( \"";
-	os << std::hex;
-
-	for (unsigned int i = 0; i < t_oid::size; ++i)
-		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
-
-	os << std::dec;
-	os << "\" )";
-
-	return os;
-}
-
-struct t_regex
-{
-	t_cstring										pattern;
-	t_cstring										regex;
-};
-
-std::ostream &
-operator<<(std::ostream &							os,
-		   t_regex const &							e)
-{
-	return os << "/" << e.pattern << "/" << e.regex;
-}
-
-# define T_DBPTR_BUFFER_SIZE						12
-
-struct t_dbpointer
-{
-	static constexpr unsigned int					size = T_DBPTR_BUFFER_SIZE;
-
-	t_string										str;
-	std::uint8_t									buffer[T_DBPTR_BUFFER_SIZE];
-};
-
-std::ostream &
-operator<<(std::ostream &							os,
-		   t_dbpointer const &						e)
-{
-	os << "Dbref( " << e.str << ", \"";
-	os << std::hex;
-
-	for (unsigned int i = 0; i < t_dbpointer::size; ++i)
-		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
-
-	os << std::dec;
-	os << "\" )";
-	return os;
-}
-
-struct t_binary
-{
-	std::int32_t									size;
-	std::uint8_t									subtype;
-	std::vector<std::uint8_t>						buffer;
-};
-
-std::ostream &
-operator<<(std::ostream &							os,
-		   t_binary const &							e)
-{
-	bool											notfirst = false;
-
-	os << "{";
-	os << " \"$size\" : " << e.size << ",";
-	os << " \"$binary\" : \"";
-	for (auto & i: e.buffer)
-	{
-		if (notfirst)
-			os << ", ";
-
-		os << "0x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(i);
-
-		notfirst = true;
-	}
-	os << "\", \"$type\" : \"";
-	os << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(e.subtype) << std::dec;
-	os << "\"}";
-	return os;
-}
-
+/**
+** Forward Declarations
+*/
 template <typename TKey, std::uint8_t _id, typename ...Args>
 class _TElement;
 
 template <typename TKey, std::uint8_t _id>
 class _TDocument;
 
+struct t_string;
+struct t_binary;
+struct t_oid;
+struct t_regex;
+struct t_dbpointer;
 struct t_code_w_s;
 
+/**
+** Fields Construction
+*/
 typedef _TDocument<t_cstring, 0x00>					RootDocument;
 
 /// element	::=	"\x01" e_name double				64-bit binary floating point
@@ -169,6 +72,125 @@ typedef _TElement<t_cstring, 0xFF>					MinKey;
 /// |			"\x7F" e_name						Max key
 typedef _TElement<t_cstring, 0x7F>					MaxKey;
 
+
+/// String Declaration
+struct t_string
+{
+	std::int32_t									len;
+	t_cstring										str;
+};
+
+/// String Print method
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_string const &							e)
+{
+	return os << "\"" << e.str << "\"";
+}
+
+/// ObjectId Declaration
+# define T_OID_BUFFER_SIZE							12
+
+struct t_oid
+{
+	static constexpr unsigned int					size = T_OID_BUFFER_SIZE;
+
+	std::uint8_t									buffer[T_OID_BUFFER_SIZE];
+};
+
+/// ObjectId Print method
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_oid const &							e)
+{
+	os << "ObjectId( \"";
+	os << std::hex;
+
+	for (unsigned int i = 0; i < t_oid::size; ++i)
+		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
+
+	os << std::dec;
+	os << "\" )";
+
+	return os;
+}
+
+/// Regex Declaration
+struct t_regex
+{
+	t_cstring										pattern;
+	t_cstring										regex;
+};
+
+/// Regex Print method
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_regex const &							e)
+{
+	return os << "/" << e.pattern << "/" << e.regex;
+}
+
+/// DBPointer Declaration
+# define T_DBPTR_BUFFER_SIZE						12
+
+struct t_dbpointer
+{
+	static constexpr unsigned int					size = T_DBPTR_BUFFER_SIZE;
+
+	t_string										str;
+	std::uint8_t									buffer[T_DBPTR_BUFFER_SIZE];
+};
+
+/// DBPointer Print method
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_dbpointer const &						e)
+{
+	os << "Dbref( " << e.str << ", \"";
+	os << std::hex;
+
+	for (unsigned int i = 0; i < t_dbpointer::size; ++i)
+		os << std::setw(2) << std::setfill('0') << static_cast<int>(e.buffer[i]);
+
+	os << std::dec;
+	os << "\" )";
+	return os;
+}
+
+/// Binary Declaration
+struct t_binary
+{
+	std::int32_t									size;
+	std::uint8_t									subtype;
+	std::vector<std::uint8_t>						buffer;
+};
+
+/// Binary Print method
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_binary const &							e)
+{
+	bool											notfirst = false;
+
+	os << "{";
+	os << " \"$size\" : " << e.size << ",";
+	os << " \"$binary\" : \"";
+	for (auto & i: e.buffer)
+	{
+		if (notfirst)
+			os << ", ";
+
+		os << "0x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(i);
+
+		notfirst = true;
+	}
+	os << "\", \"$type\" : \"";
+	os << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(e.subtype) << std::dec;
+	os << "\"}";
+	return os;
+}
+
+/// JavaScript Code WS Declaration
 struct t_code_w_s
 {
 	std::int32_t									size;
@@ -176,12 +198,14 @@ struct t_code_w_s
 	std::shared_ptr<RootDocument>					doc;
 };
 
-//std::ostream &
-//operator<<(std::ostream &							os,
-//		   t_code_w_s const &						e)
-//{
-//	return os;
-//}
+/// JavaScript Code WS Print method
+/// It exists, but implemented in printerVisitor
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_code_w_s const &						e)
+{
+	return os;
+}
 
 #endif /** !TYPES_HH_  */
 

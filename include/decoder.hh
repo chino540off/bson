@@ -9,6 +9,7 @@
 # include <document.hh>
 # include <factory.hh>
 
+/// Basic Decoder from bytes
 template <typename T>
 class Decoder
 {
@@ -31,26 +32,7 @@ class Decoder
 		T													_value;
 };
 
-template <>
-class Decoder<t_empty>
-{
-	public:
-		Decoder(std::vector<std::uint8_t>::const_iterator &	it,
-				std::vector<std::uint8_t>::const_iterator const &	end,
-				unsigned int &								offset)
-		{
-		}
-
-	public:
-		t_empty const &										value() const
-		{
-			return _value;
-		}
-
-	private:
-		t_empty												_value;
-};
-
+/// Boolean Decoder from bytes
 template <>
 class Decoder<bool>
 {
@@ -73,6 +55,7 @@ class Decoder<bool>
 		bool												_value;
 };
 
+/// CString Decoder from bytes
 template <>
 class Decoder<t_cstring>
 {
@@ -99,6 +82,7 @@ class Decoder<t_cstring>
 		t_cstring											_value;
 };
 
+/// String Decoder from bytes
 template <>
 class Decoder<t_string>
 {
@@ -128,6 +112,7 @@ class Decoder<t_string>
 		t_string											_value;
 };
 
+/// ObjectId Decoder from bytes
 template <>
 class Decoder<t_oid>
 {
@@ -150,6 +135,7 @@ class Decoder<t_oid>
 		t_oid												_value;
 };
 
+/// Regex Decoder from bytes
 template <>
 class Decoder<t_regex>
 {
@@ -172,6 +158,7 @@ class Decoder<t_regex>
 		t_regex												_value;
 };
 
+/// DBPointer Decoder from bytes
 template <>
 class Decoder<t_dbpointer>
 {
@@ -195,6 +182,7 @@ class Decoder<t_dbpointer>
 		t_dbpointer											_value;
 };
 
+/// Binary Decoder from bytes
 template <>
 class Decoder<t_binary>
 {
@@ -230,6 +218,7 @@ class Decoder<t_binary>
 		t_binary											_value;
 };
 
+/// JavaScript Code WS Decoder from bytes
 template <>
 class Decoder<t_code_w_s>
 {

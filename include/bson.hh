@@ -6,6 +6,9 @@
 # include <factory.hh>
 # include <printer.hh>
 
+/**
+** Factory registers
+*/
 RegisterInFactory<Element<t_cstring>, Double,		std::uint8_t>	_register_elt_double(0x01);
 RegisterInFactory<Element<t_cstring>, String,		std::uint8_t>	_register_elt_string(0x02);
 RegisterInFactory<Element<t_cstring>, Document,		std::uint8_t>	_register_elt_document(0x03);
