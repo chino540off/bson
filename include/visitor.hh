@@ -11,6 +11,7 @@ class Visitor
 		virtual void visit(String		&) = 0;
 		virtual void visit(Document		&) = 0;
 		virtual void visit(Array		&) = 0;
+		virtual void visit(Binary		&) = 0;
 		virtual void visit(Undefined	&) = 0;
 		virtual void visit(ObjectId		&) = 0;
 		virtual void visit(Boolean		&) = 0;
@@ -35,6 +36,7 @@ class ConstVisitor
 		virtual void visit(String		const &) = 0;
 		virtual void visit(Document		const &) = 0;
 		virtual void visit(Array		const &) = 0;
+		virtual void visit(Binary		const &) = 0;
 		virtual void visit(Undefined	const &) = 0;
 		virtual void visit(ObjectId		const &) = 0;
 		virtual void visit(Boolean		const &) = 0;

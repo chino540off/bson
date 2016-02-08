@@ -84,6 +84,37 @@ operator<<(std::ostream &							os,
 	return os;
 }
 
+struct t_binary
+{
+	std::int32_t									size;
+	std::uint8_t									subtype;
+	std::vector<std::uint8_t>						buffer;
+};
+
+std::ostream &
+operator<<(std::ostream &							os,
+		   t_binary const &							e)
+{
+	bool											notfirst = false;
+
+	os << "{";
+	os << " \"$size\" : " << e.size << ",";
+	os << " \"$binary\" : \"";
+	for (auto & i: e.buffer)
+	{
+		if (notfirst)
+			os << ", ";
+
+		os << "0x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(i);
+
+		notfirst = true;
+	}
+	os << "\", \"$type\" : \"";
+	os << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(e.subtype) << std::dec;
+	os << "\"}";
+	return os;
+}
+
 template <typename TKey, std::uint8_t _id, typename ...Args>
 class _TElement;
 
@@ -101,6 +132,7 @@ typedef _TDocument<t_cstring, 0x03>					Document;
 /// |			"\x04" e_name document				Array
 typedef _TDocument<t_cstring, 0x04>					Array;
 /// |			"\x05" e_name binary				Binary data
+typedef _TElement<t_cstring, 0x05, t_binary>		Binary;
 /// |			"\x06" e_name						Undefined (value) — Deprecated
 typedef _TElement<t_cstring, 0x06>					Undefined;
 /// |			"\x07" e_name (byte*12)				ObjectId

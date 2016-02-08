@@ -178,5 +178,32 @@ class Decoder<t_dbpointer>
 		t_dbpointer									_value;
 };
 
+template <>
+class Decoder<t_binary>
+{
+	public:
+		Decoder(std::vector<std::uint8_t> const &	buffer,
+				unsigned int &						offset)
+		{
+			_value.size = Decoder<std::int32_t>(buffer, offset).value();
+			_value.subtype = Decoder<std::uint8_t>(buffer, offset).value();
+
+			for (auto i = 0; i < _value.size; ++i)
+				_value.buffer.push_back(buffer[offset + i]);
+
+			offset += _value.size;
+		}
+
+
+	public:
+		t_binary const &							value() const
+		{
+			return _value;
+		}
+
+	private:
+		t_binary									_value;
+};
+
 #endif /** !DECODER_HH_  */
 

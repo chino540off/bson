@@ -77,6 +77,10 @@ class Printer:
 			}
 			_os << " ]";
 		}
+		virtual void visit(Binary		const & e)
+		{
+			_os << "\"" << e.key() << "\" : " << e.value();
+		}
 		virtual void visit(Undefined	const & e)
 		{
 			_os << "\"" << e.key() << "\"";

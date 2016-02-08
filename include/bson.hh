@@ -10,6 +10,7 @@ RegisterInFactory<Element<t_cstring>, Double,		std::uint8_t>	_register_elt_doubl
 RegisterInFactory<Element<t_cstring>, String,		std::uint8_t>	_register_elt_string(0x02);
 RegisterInFactory<Element<t_cstring>, Document,		std::uint8_t>	_register_elt_document(0x03);
 RegisterInFactory<Element<t_cstring>, Array,		std::uint8_t>	_register_elt_array(0x04);
+RegisterInFactory<Element<t_cstring>, Binary,		std::uint8_t>	_register_elt_binary(0x05);
 RegisterInFactory<Element<t_cstring>, Undefined,	std::uint8_t>	_register_elt_undefined(0x06);
 RegisterInFactory<Element<t_cstring>, ObjectId,		std::uint8_t>	_register_elt_objectid(0x07);
 RegisterInFactory<Element<t_cstring>, Boolean,		std::uint8_t>	_register_elt_boolean(0x08);
