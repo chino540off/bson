@@ -15,10 +15,25 @@ main(int								argc,
 		return 1;
 	}
 
-    std::ifstream						input(argv[1], std::ios::binary);
-	std::vector<std::uint8_t>			vec;
+	// open the file:
+    std::ifstream						file(argv[1], std::ios::binary);
 
-	std::copy(std::istream_iterator<std::uint8_t>(input), std::istream_iterator<std::uint8_t>(), std::back_inserter(vec));
+    // Stop eating new lines in binary mode!!!
+    file.unsetf(std::ios::skipws);
+
+    // get its size:
+    std::streampos						fileSize;
+
+    file.seekg(0, std::ios::end);
+    fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    // reserve capacity
+    std::vector<std::uint8_t> vec;
+    vec.reserve(fileSize);
+
+	std::copy(std::istream_iterator<std::uint8_t>(file), std::istream_iterator<std::uint8_t>(), std::back_inserter(vec));
+	std::cout << "Size Read: " << vec.size() << std::endl;
 	for (auto & i : vec)
 		std::cout << std::hex << static_cast<int>(i) << " ";
 
