@@ -34,7 +34,7 @@ class BSON
 		{
 			unsigned int							offset = 0;
 
-			_rds.push_back(std::make_shared<RootDocument>(buffer, offset));
+			_rds.push_back(std::make_shared<RootDocument>(buffer));
 		}
 
 	public:
