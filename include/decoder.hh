@@ -38,13 +38,13 @@ class Decoder<t_empty>
 		}
 
 	public:
-		t_empty const &							value() const
+		t_empty const &								value() const
 		{
 			return _value;
 		}
 
 	private:
-		t_empty									_value;
+		t_empty										_value;
 };
 
 template <>
@@ -59,13 +59,13 @@ class Decoder<bool>
 		}
 
 	public:
-		bool const &							value() const
+		bool const &								value() const
 		{
 			return _value;
 		}
 
 	private:
-		bool									_value;
+		bool										_value;
 };
 
 template <>
@@ -147,13 +147,13 @@ class Decoder<t_regex>
 		}
 
 	public:
-		t_regex const &							value() const
+		t_regex const &								value() const
 		{
 			return _value;
 		}
 
 	private:
-		t_regex									_value;
+		t_regex										_value;
 };
 
 template <>
