@@ -62,14 +62,17 @@ class _TDocument:
 				if (buffer[offset] == 0x00)
 					break;
 
-				auto e = std::shared_ptr<Element<TKey>>(GenericFactory<Element<TKey>, std::uint8_t>::instance().Create(buffer[offset], buffer, offset));
+				unsigned int	type_offset = offset;
+
+				++offset;
+
+				auto e = std::shared_ptr<Element<TKey>>(GenericFactory<Element<TKey>, std::uint8_t>::instance().Create(buffer[type_offset], buffer, offset));
 
 				if (e != nullptr)
 					_elements.push_back(e);
 				else
 				{
-					std::cerr << "Unknown Type " << std::hex << static_cast<int>(buffer[offset]) << std::dec << std::endl;;
-					++offset;
+					std::cerr << "Unknown Type " << std::hex << static_cast<int>(buffer[type_offset]) << std::dec << std::endl;;
 				}
 			}
 		}

@@ -75,7 +75,7 @@ class Decoder<t_cstring>
 		Decoder(std::vector<std::uint8_t> const &	buffer,
 				unsigned int &						offset)
 		{
-			while (buffer[offset] != '\x00')
+			while (buffer[offset] != 0x00)
 			{
 				_value += buffer[offset];
 				++offset;
